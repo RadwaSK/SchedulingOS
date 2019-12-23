@@ -1,9 +1,10 @@
-import numpy as np
+from process import *
 
 # valid assumption: the new arrived processes are inserted in the beginning of the queue
 # and any processed process is removed from queue and inserted in the back
 
-def RR(processes, quantum, contextSwitchingTime):
+def RR(procs, quantum, contextSwitchingTime):
+    processes = procs.copy()
     step = 0
     last_processed = 1
     queue = []
@@ -12,7 +13,8 @@ def RR(processes, quantum, contextSwitchingTime):
         tempQ = queue
         queue = []
         for p in processes:
-            if p[1] <= step:
+            if p.AT <= step:
+                p.setStartTime(step)
                 queue.append(p)
                 processes.remove(p)
 
@@ -24,28 +26,30 @@ def RR(processes, quantum, contextSwitchingTime):
         if len(queue) > 0:
             p = queue[0]
             queue.remove(p)
+            if p.id != last_processed and (len(processes) > 0 or len(queue) > 0):
+                step += contextSwitchingTime
+                # print("adding context switching time, so step now is ", step)
+
             # print("processing process number ", p[0])
-            p[2] -= quantum
-            p[2] = max(p[2], 0)
-            # print("Now it has burst time = ", p[2])
-            if p[2] != 0:
+            stat = p.execute(step, quantum)
+
+            step += quantum
+
+            if stat != 0:  # not finished yet
                 queue.append(p)
             # else:
                 # print("process ", p, " is finished")
 
-            step += quantum
-            # print("now time is ", step)
-            if p[0] != last_processed and (len(processes) > 0 or len(queue) > 0):
-                step += contextSwitchingTime
-                # print("adding context switching time, so step now is ", step)
-            last_processed = p[0]
+            last_processed = p.id
         # print("")
         # print("")
+    return step
 
-# processes = [[1, 0, 3],
-#              [2, 1, 5],
-#              [3, 3, 2],
-#              [4, 9, 5],
-#              [5, 12, 5]]
-#
-# RR(processes, 3, 1)
+p1 = Process(1, 0, 3, 1)
+p2 = Process(2, 1, 5, 2)
+p3 = Process(3, 3, 2, 3)
+p4 = Process(4, 9, 5, 4)
+p5 = Process(5, 12, 5, 5)
+processes = [p1, p2, p3, p4, p5]
+step = RR(processes, 1, 0)
+print(step)

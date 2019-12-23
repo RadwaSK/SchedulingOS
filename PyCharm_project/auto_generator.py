@@ -19,7 +19,7 @@ def generate_processes(proc_num,AT_parms,BT_parms,PR_parms,file_name):
     f=open(file_name,"a")
     f.write(str(proc_num)+"\n")
     for i in range (0,proc_num):
-        f.write(str(i+1)+" "+str(round(AT[i],2))+" "+str(round(BT[i],2))+" "+str(PR[i])+"\n")
+        f.write(str(i+1)+" "+str(int(AT[i]))+" "+str(int(BT[i]))+" "+str(int(PR[i]))+"\n")
     f.close()
 
 #read the processes parameters from the previous output file
@@ -28,8 +28,8 @@ def read_proc_from_file(file_name):
     processes = [] 
     f.readline()
     for line in f:
-        arr= [float(x) for x in line.split()]
-        pro= Process(int(arr[0]),arr[1],arr[2],int(arr[3]))
+        arr= [int(x) for x in line.split()]
+        pro= Process(arr[0],arr[1],arr[2],arr[3])
         processes.append(pro)
     return processes
     
@@ -43,7 +43,6 @@ def generate_input_file(file_name,min_num=None,max_num=None):
         max_num= min_num+ 10
     min_num=int(min_num)
     max_num=int(max_num)
-    print(min_num,max_num)
     
     n=random.randrange(min_num,max_num,1)
     f.write(str(n)+"\n")

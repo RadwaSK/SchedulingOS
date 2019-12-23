@@ -52,4 +52,4 @@ p4 = Process(4, 9, 5, 4)
 p5 = Process(5, 12, 5, 5)
 processes = [p1, p2, p3, p4, p5]
 step = RR(processes, 1, 0)
-print(step)
+#print(step)

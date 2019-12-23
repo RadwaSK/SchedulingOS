@@ -2,8 +2,8 @@
 class Process:
     def __init__(self, id, AT, BT, P):
         self.id = int(id)
-        self.AT = float(AT)
-        self.BT = float(BT)
+        self.AT = int(AT)
+        self.BT = int(BT)
         self.P = int(P)
         self.startT = -1
         self.finishT = -1
@@ -19,14 +19,14 @@ class Process:
         self.finishT = float(time)
 
     def calcTAT(self):
-        self.TAT = round(self.finishT - self.AT, 2)
+        self.TAT = float(self.finishT) - self.AT
 
     def calcWTAT(self):
-        self.WTAT = round((self.finishT - self.AT) / self.BT, 2)
+        self.WTAT = round((self.finishT - self.AT) / float(self.BT), 2)
 
     def getAT(self):
         return self.AT
-
+    
     def getWTAT(self):
         return self.WTAT
 

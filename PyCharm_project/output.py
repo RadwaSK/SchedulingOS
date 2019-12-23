@@ -22,3 +22,22 @@ def WriteLog(processes, algorithm_name):
 
     for p in processes:
         p.printSelf(logFile)
+
+
+def getLists(processes):
+    periods = []
+    for p in processes:
+        periods.append((p.id, p.getExecutionPeriods))
+
+    periods.sort(key=lambda k: k[1][0])
+    # for the graph
+    y_id = []
+    x1_startTime = []
+    x2_runTime = []
+
+    for per in periods:
+        y_id.append(per[0])
+        x1_startTime.append(per[1][0])
+        x2_runTime.append(per[1][1] - per[1][0])
+    return (y_id, x1_startTime, x2_runTime)
+

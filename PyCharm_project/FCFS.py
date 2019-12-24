@@ -2,6 +2,7 @@ from process import *
 
 def FCFS(procs, contextSwitchingTime):
     processes = procs.copy()
+    done = []
     step = 0
     processes.sort(key=lambda x: x.AT)
 
@@ -10,7 +11,10 @@ def FCFS(procs, contextSwitchingTime):
         p.setStartTime(step)
         p.execute(step)
         processes.remove(p)
+        done.append(p)
         step += p.BT
         if len(processes) > 0:
             step += contextSwitchingTime
 
+    done.sort(key=lambda x: x.AT)
+    return done

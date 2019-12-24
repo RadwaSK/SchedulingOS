@@ -5,6 +5,7 @@ from process import *
 
 def RR(procs, quantum, contextSwitchingTime):
     processes = procs.copy()
+    done = []
     step = 0
     last_processed = 1
     queue = []
@@ -37,13 +38,15 @@ def RR(procs, quantum, contextSwitchingTime):
 
             if stat != 0:  # not finished yet
                 queue.append(p)
-            # else:
-                # print("process ", p, " is finished")
+            else:
+                done.append(p)
 
             last_processed = p.id
         # print("")
         # print("")
-    return step
+    done.sort(key=lambda x: x.AT)
+    return done
+
 
 p1 = Process(1, 0, 3, 1)
 p2 = Process(2, 1, 5, 2)
@@ -51,5 +54,5 @@ p3 = Process(3, 3, 2, 3)
 p4 = Process(4, 9, 5, 4)
 p5 = Process(5, 12, 5, 5)
 processes = [p1, p2, p3, p4, p5]
-step = RR(processes, 1, 0)
+RR(processes, 1, 0)
 #print(step)

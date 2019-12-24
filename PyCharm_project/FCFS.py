@@ -13,8 +13,6 @@ def FCFS(procs, contextSwitchingTime):
         processes.remove(p)
         done.append(p)
         step += p.BT
-        if len(processes) > 0:
-            step += contextSwitchingTime
 
     done.sort(key=lambda x: x.AT)
     return done

@@ -24,7 +24,7 @@ def WriteLog(processes, algorithm_name):
         p.printSelf(logFile)
 
 
-def getLists(processes):
+def getLists(processes, contextList):
     periods = []
     for p in processes:
         periods.append((p.id, p.getExecutionPeriods))
@@ -35,9 +35,27 @@ def getLists(processes):
     x1_startTime = []
     x2_runTime = []
 
-    for per in periods:
+    perIndx = 0
+    contIndx = 0
+    while perIndx < len(periods) and contIndx < len(contextList):
+        per = periods[perIndx]
+        contxt = contextList[contIndx]
+        if (per[1][0] < contxt[0]):
+            y_id.append(per[0])
+            x1_startTime.append(per[1][0])
+            x2_runTime.append(per[1][1] - per[1][0])
+            perIndx += 1
+        else:
+            y_id.append(-1)
+            x1_startTime.append(contxt[0])
+            x2_runTime.append(contxt[1])
+            contIndx += 1
+
+    for i in range(perIndx, len(periods)):
+        per = periods[i]
         y_id.append(per[0])
         x1_startTime.append(per[1][0])
         x2_runTime.append(per[1][1] - per[1][0])
+
     return (y_id, x1_startTime, x2_runTime)
 

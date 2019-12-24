@@ -1,3 +1,4 @@
+import matplotlib as mp
 from auto_generator import *
 from FCFS import *
 from RR import *
@@ -12,20 +13,26 @@ processes=read_proc_from_file(file_path)
 print("write the scheduling algorithm name(RR,FCFS,HPF,SRTN): ")
 algo = input()
 if algo == "HPF":
-    proc = HPF(processes)
+    proc, contxtPeriods = HPF(processes)
 elif algo == "FCFS":
-    proc = FCFS(processes)
+    proc, contxtPeriods = FCFS(processes)
 elif algo == "SRTN":
     print("Enter Context Switching Time: ")
-    cntxt= input()
-    proc = SRTN(processes, float(cntxt))
+    cntxt = input()
+    proc, contxtPeriods = SRTN(processes, float(cntxt))
 elif algo == "RR":
     print("Enter Context Switching Time: ")
-    cntxt= input()
+    cntxt = input()
     print("Enter quantum: ")
-    quantum= input()
-    proc = RR (processes, int(quantum), float(cntxt))
-    
+    quantum = input()
+    proc, contxtPeriods = RR(processes, int(quantum), float(cntxt))
+
+# getting lists
+y, x1, x2 = getLists(proc, contxtPeriods)
+
+
+
 # to be removed::
-for i in range (0,len(per)):
-    print(per[i].id,per[i].startT,per[i].finishT,per[i].TAT)
+# for i in range (0,len(proc)):
+#     print(proc[i].id, proc[i].startT, proc[i].finishT, proc[i].TAT)
+

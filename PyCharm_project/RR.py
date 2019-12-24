@@ -3,6 +3,7 @@ from process import *
 # valid assumption: the new arrived processes are inserted in the beginning of the queue
 # and any processed process is removed from queue and inserted in the back
 
+
 def RR(procs, quantum, contextSwitchingTime):
     processes = procs.copy()
     done = []
@@ -49,7 +50,7 @@ def RR(procs, quantum, contextSwitchingTime):
     done.sort(key=lambda x: x.AT)
     return done, contextSwitchingList
 
-#
+
 # p1 = Process(1, 0, 3, 1)
 # p2 = Process(2, 1, 5, 2)
 # p3 = Process(3, 3, 2, 3)

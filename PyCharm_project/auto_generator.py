@@ -14,6 +14,7 @@ def generate_processes(proc_num,AT_parms,BT_parms,PR_parms,file_name):
     #getting arrival times & burst times & periority 
     AT=abs(np.random.normal(AT_parms[0],AT_parms[1],proc_num))
     BT=abs(np.random.normal(BT_parms[0],BT_parms[1],proc_num))
+    BT=BT+1
     PR=abs(np.random.poisson(PR_parms,proc_num))
     #writting the processes parameters in output file
     f=open(file_name,"a")
@@ -48,5 +49,5 @@ def generate_input_file(file_name,min_num=None,max_num=None):
     f.write(str(n)+"\n")
     f.write(str(round(abs(random.random()),2))+" "+str(round(abs(random.random()),2))+"\n")
     f.write(str(round(abs(random.random()),2))+" "+str(round(abs(random.random()),2))+"\n")
-    f.write(str(int(abs(random.random()))))
+    f.write(str(int(abs(random.random()))+5))
     f.close()

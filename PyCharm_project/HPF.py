@@ -31,4 +31,4 @@ def HPF (processes):
             time+=proc[p[1]].BT
         
     proc.sort(key=lambda x: x.id)
-    return proc
+    return proc, []

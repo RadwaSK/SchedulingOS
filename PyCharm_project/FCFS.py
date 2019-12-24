@@ -15,4 +15,4 @@ def FCFS(procs, contextSwitchingTime):
         step += p.BT
 
     done.sort(key=lambda x: x.AT)
-    return done
+    return done, []

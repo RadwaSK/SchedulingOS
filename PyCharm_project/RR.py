@@ -6,6 +6,7 @@ from process import *
 def RR(procs, quantum, contextSwitchingTime):
     processes = procs.copy()
     done = []
+    contextSwitchingList = []
     step = 0
     last_processed = 1
     queue = []
@@ -27,11 +28,12 @@ def RR(procs, quantum, contextSwitchingTime):
         if len(queue) > 0:
             p = queue[0]
             queue.remove(p)
-            if p.id != last_processed and (len(processes) > 0 or len(queue) > 0):
+            if p.id != last_processed and (len(processes) > 0 or len(queue) > 0) and contextSwitchingTime != 0:
+                contextSwitchingList.append((step, step+contextSwitchingTime))
                 step += contextSwitchingTime
                 # print("adding context switching time, so step now is ", step)
 
-            # print("processing process number ", p[0])
+            # print("processing process number ", p.id)
             stat = p.execute(step, quantum)
 
             step += quantum
@@ -45,14 +47,14 @@ def RR(procs, quantum, contextSwitchingTime):
         # print("")
         # print("")
     done.sort(key=lambda x: x.AT)
-    return done
+    return done, contextSwitchingList
 
-
-p1 = Process(1, 0, 3, 1)
-p2 = Process(2, 1, 5, 2)
-p3 = Process(3, 3, 2, 3)
-p4 = Process(4, 9, 5, 4)
-p5 = Process(5, 12, 5, 5)
-processes = [p1, p2, p3, p4, p5]
-RR(processes, 1, 0)
-#print(step)
+#
+# p1 = Process(1, 0, 3, 1)
+# p2 = Process(2, 1, 5, 2)
+# p3 = Process(3, 3, 2, 3)
+# p4 = Process(4, 9, 5, 4)
+# p5 = Process(5, 12, 5, 5)
+# processes = [p1, p2, p3, p4, p5]
+# processes, contextList = RR(processes, 2, 1)
+# print(contextList)

@@ -6,6 +6,7 @@ def SRTN (processes,context_sw):
     proc.sort(key=lambda x:x.AT)
     time=0
     ready=[]
+    context=[]
     i=0
     last_processed=-1
     while 1:
@@ -28,6 +29,7 @@ def SRTN (processes,context_sw):
             p=ready[0]
             #if last process didn't finish or next one will be loaded --> context switching:
             if (last_processed !=-1 and p[1] != last_processed) and (proc[p[1]].startT != -1 or proc[last_processed].finishT == -1):
+                context.append([time,time+context_sw])
                 time+= context_sw
             if proc[p[1]].remainingT == proc[p[1]].BT:
                 proc[p[1]].setStartTime(time)
@@ -37,4 +39,4 @@ def SRTN (processes,context_sw):
             if rem_time == 0:
                 ready.remove(p)
     proc.sort(key=lambda x: x.id)
-    return proc
+    return proc,context

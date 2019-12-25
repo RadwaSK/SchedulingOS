@@ -39,7 +39,7 @@ class Process:
     def execute(self, time, quantum=None):
         if quantum is None:
             quantum = self.BT
-        self.addPeriod((time, time+quantum))
+        self.addPeriod([time, time+quantum])
         self.remainingT -= quantum
         self.remainingT = max(self.remainingT, 0)
 

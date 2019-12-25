@@ -27,9 +27,10 @@ def WriteLog(processes, algorithm_name):
 def getLists(processes, contextList):
     periods = []
     for p in processes:
-        periods.append((p.id, p.getExecutionPeriods))
+        periods.append([p.id, p.getExecutionPeriods()])
 
-    periods.sort(key=lambda k: k[1][0])
+    periods.sort(key=lambda x: x[1][0])
+
     # for the graph
     y_id = []
     x1_startTime = []
@@ -42,8 +43,8 @@ def getLists(processes, contextList):
         contxt = contextList[contIndx]
         if (per[1][0] < contxt[0]):
             y_id.append(per[0])
-            x1_startTime.append(per[1][0])
-            x2_runTime.append(per[1][1] - per[1][0])
+            x1_startTime.append(per[1][0][0])
+            x2_runTime.append(per[1][0][1] - per[1][0][0])
             perIndx += 1
         else:
             y_id.append(-1)
@@ -51,11 +52,13 @@ def getLists(processes, contextList):
             x2_runTime.append(contxt[1])
             contIndx += 1
 
-    for i in range(perIndx, len(periods)):
-        per = periods[i]
-        y_id.append(per[0])
-        x1_startTime.append(per[1][0])
-        x2_runTime.append(per[1][1] - per[1][0])
+
+    if perIndx < len(periods):
+        for i in range(perIndx, len(periods)):
+            per = periods[i]
+            y_id.append(per[0])
+            x1_startTime.append(per[1][0][0])
+            x2_runTime.append(per[1][0][1] - per[1][0][0])
 
     return (y_id, x1_startTime, x2_runTime)
 

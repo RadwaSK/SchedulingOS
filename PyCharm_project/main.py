@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import matplotlib.pyplot as plt
-import numpy as np
 from auto_generator import *
 from FCFS import *
 from RR import *
@@ -30,14 +29,14 @@ elif algo == "RR":
     proc, contxtPeriods = RR(processes, int(quantum), float(cntxt))
 
 # getting lists
-y, x1, x2 = getLists(proc, contxtPeriods)
+x, y = getLists(proc, contxtPeriods)
 
-# plt.bar(x1, y, align='left', alpha=0.5)
-# plt.xticks(x1, x2)
-# plt.ylabel("pid")
-# plt.xlabel("time steps")
-# plt.title(algo)
-# plt.show()
+plt.plot(x, y)
+plt.ylabel("pid")
+plt.xlabel("time steps")
+plt.title(algo)
+plt.grid()
+plt.show()
 
 # to be removed::
 # for i in range (0,len(proc)):

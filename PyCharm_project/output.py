@@ -38,18 +38,31 @@ def getLists(processes, contextList):
 
     perIndx = 0
     contIndx = 0
+    lastX = 0
     while perIndx < len(periods) and contIndx < len(contextList):
         per = periods[perIndx]
         contxt = contextList[contIndx]
-        if (per[1][0] < contxt[0]):
+        if per[1][0][0] <= contxt[0]:
+            if per[1][0][0] != lastX:
+                y_id.append(0)
+                x1_startTime.append(lastX)
+                x2_runTime.append(per[1][0][0])
+
             y_id.append(per[0])
             x1_startTime.append(per[1][0][0])
             x2_runTime.append(per[1][0][1] - per[1][0][0])
+            lastX = per[1][0][1]
             perIndx += 1
         else:
+            if contxt[0] != lastX:
+                y_id.append(0)
+                x1_startTime.append(lastX)
+                x2_runTime.append(contxt[0])
+
             y_id.append(-1)
             x1_startTime.append(contxt[0])
             x2_runTime.append(contxt[1])
+            lastX = contxt[1]+contxt[0]
             contIndx += 1
 
 
@@ -60,5 +73,18 @@ def getLists(processes, contextList):
             x1_startTime.append(per[1][0][0])
             x2_runTime.append(per[1][0][1] - per[1][0][0])
 
-    return (y_id, x1_startTime, x2_runTime)
+    yPts = [0]
+    xPts = [0]
+
+    for i in range(0, len(y_id)):
+        x1, x2, y = x1_startTime[i], x2_runTime[i], y_id[i]
+        yPts.append(y)
+        yPts.append(y)
+        xPts.append(x1)
+        xPts.append(x1 + x2)
+
+    xPts.append(xPts[-1])
+    yPts.append(0)
+
+    return xPts, yPts
 

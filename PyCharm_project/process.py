@@ -39,16 +39,20 @@ class Process:
     def execute(self, time, quantum=None):
         if quantum is None:
             quantum = self.BT
-        self.addPeriod([time, time+quantum])
-        self.remainingT -= quantum
-        self.remainingT = max(self.remainingT, 0)
+        remainedT = self.remainingT - quantum
+        if (remainedT < 0):
+            per = self.remainingT
+        else:
+            per = quantum
+        self.addPeriod([time, time + min(per, quantum)])
+        self.remainingT = max(remainedT, 0)
 
         if self.remainingT == 0:
-            self.setFinishTime(time+quantum)
+            self.setFinishTime(time + per)
             self.calcTAT()
             self.calcWTAT()
 
-        return self.remainingT
+        return self.remainingT, min(per, quantum)
 
     def printSelf(self, outFile):
         outFile.write("Process #" + str(self.id) + " info.: Waiting Time = "

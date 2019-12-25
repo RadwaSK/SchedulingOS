@@ -6,10 +6,12 @@ from process import *
 
 def RR(procs, quantum, contextSwitchingTime):
     processes = procs.copy()
+    processes.sort(key=lambda x: x.AT)
+
     done = []
     contextSwitchingList = []
     step = 0
-    last_processed = 1
+    last_processed = processes[0]
     queue = []
     while len(processes) > 0 or len(queue) > 0:
         # add arrived processes to the queue
@@ -29,22 +31,22 @@ def RR(procs, quantum, contextSwitchingTime):
         if len(queue) > 0:
             p = queue[0]
             queue.remove(p)
-            if p.id != last_processed and (len(processes) > 0 or len(queue) > 0) and contextSwitchingTime != 0:
-                contextSwitchingList.append((step, step+contextSwitchingTime))
+            if p.id != last_processed.id and contextSwitchingTime != 0 and last_processed.remainingT != 0:
+                contextSwitchingList.append((step, contextSwitchingTime))
                 step += contextSwitchingTime
                 # print("adding context switching time, so step now is ", step)
 
             # print("processing process number ", p.id)
-            stat = p.execute(step, quantum)
+            stat, q = p.execute(step, quantum)
+            last_processed = p
 
-            step += quantum
+            step += q
 
             if stat != 0:  # not finished yet
                 queue.append(p)
             else:
                 done.append(p)
 
-            last_processed = p.id
         # print("")
         # print("")
     done.sort(key=lambda x: x.AT)

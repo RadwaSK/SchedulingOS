@@ -1,6 +1,6 @@
 from process import *
 
-def FCFS(procs, contextSwitchingTime):
+def FCFS(procs):
     processes = procs.copy()
     done = []
     step = 0

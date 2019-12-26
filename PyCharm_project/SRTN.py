@@ -29,13 +29,12 @@ def SRTN(processes, context_sw):
         if len(ready) > 0:
             p = ready[0]
             # if last process didn't finish or next one will be loaded --> context switching:
-            if (last_processed != -1 and p[1] != last_processed)and (proc[p[1]].startT != -1
-                                                                     or proc[last_processed].finishT == -1):
-                context.append([time, time+context_sw])
+            if (last_processed != -1 and p[1] != last_processed)and (proc[p[1]].startT != -1 or proc[last_processed].finishT == -1):
+                context.append([time, context_sw])
                 time += context_sw
             if proc[p[1]].remainingT == proc[p[1]].BT:
                 proc[p[1]].setStartTime(time)
-            rem_time = proc[p[1]].execute(time, 1)
+            rem_time, qu = proc[p[1]].execute(time, 1)
             time = time + 1.0
             last_processed = p[1]   # id of processed process
             if rem_time == 0:
